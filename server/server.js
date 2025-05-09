@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const stripe = Stripe('');
+const stripe = Stripe();
 
 // Configuration de base
 app.use(express.static(path.join(__dirname, 'public')));
