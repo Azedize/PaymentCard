@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de Paiement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f9f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        .success-icon {
+            color: #4CAF50;
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .amount {
+            font-size: 24px;
+            color: #2E7D32;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f0f9f0;
+            border-radius: 5px;
+        }
+
+        .transaction-details {
+            text-align: left;
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .error-message {
+            color: #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            background-color: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading" id="loading">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+            </div>
+        </div>
+
+        <i class="fas fa-check-circle success-icon"></i>
+        <h1 id="mainTitle">Confirmation de Paiement</h1>
+        <div class="amount" id="amountContainer">Chargement...</div>
+        
+        <div class="transaction-details">
+            <p id="customerEmail">Email : Chargement...</p>
+            <p><strong>Référence de commande :</strong> <span id="orderId">#--</span></p>
+            <p><strong>Date de transaction :</strong> <span id="transactionDate">--/--/----</span></p>
+            <p><strong>Délai de livraison estimé :</strong> 2-3 jours ouvrés</p>
+        </div>
+
+
+
+        <div class="support-info">
+            <p>Besoin d'aide ? Contactez notre support :</p>
+            <p>📧 <a href="mailto:support@example.com">support@example.com</a></p>
+            <p>📞 01 23 45 67 89 (Lun-Ven 9h-18h)</p>
+        </div>
+
+        <a href="./index.html" class="button">Retour à l'accueil</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const loading = document.getElementById('loading');
+            const errorContainer = document.createElement('div');
+            
+            try {
+                // Afficher le loader
+                loading.style.display = 'block';
+
+                // Récupérer l'ID de session
+                const urlParams = new URLSearchParams(window.location.search);
+                const sessionId = urlParams.get('session_id');
+
+                if (!sessionId) throw new Error('Session ID manquant');
+
+                // Récupérer les données de la session
+                const response = await fetch(`/session-status?session_id=${sessionId}`);
+                if (!response.ok) throw new Error('Échec de la récupération des données');
+                
+                const sessionData = await response.json();
+
+                // Mettre à jour l'interface
+                document.getElementById('amountContainer').textContent = 
+                    `${sessionData.amount_total.toFixed(2)} €`;
+
+                document.getElementById('customerEmail').textContent = 
+                    `Email : ${sessionData.customer_email}`;
+
+
+                document.getElementById('orderId').textContent = 
+                    `#${sessionId.substring(0, 8).toUpperCase()}`;
+
+                document.getElementById('transactionDate').textContent = 
+                    new Date().toLocaleDateString('fr-FR');
+
+            } catch (error) {
+                console.error(error);
+                errorContainer.className = 'error-message';
+                errorContainer.innerHTML = `
+                    <strong>Erreur :</strong> ${error.message}<br>
+                    Veuillez contacter notre support en fournissant cette référence : ${sessionId || 'N/A'}
+                `;
+                container.insertBefore(errorContainer, container.firstChild);
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

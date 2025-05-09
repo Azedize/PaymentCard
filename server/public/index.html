@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paiement de Commande - Outlet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <link rel="stylesheet" href="./style.css">
+  <script>
+    emailjs.init({ publicKey: 'vTE0slihJ8jvyMeVq' }); 
+  </script>
+</head>
+
+<body>
+
+  <!-- <form id="payment-form">
+    <fieldset>
+        <legend>📝 Détails de la Commande</legend>
+        <div>
+            <label for="order_reference">Référence de commande (optionnel) :</label>
+            <input type="text" id="order_reference" placeholder="Ex: ORD-12345">
+            <div class="error" id="order_reference_error"></div>
+        </div>
+        <div>
+            <label for="tiktok_pseudo">Pseudo TikTok (optionnel) :</label>
+            <input type="text" id="tiktok_pseudo" placeholder="Ex: @votrePseudoTikTok">
+            <div class="error" id="tiktok_pseudo_error"></div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>👤 Informations Client</legend>
+        <div class="input-group">
+            <div>
+                <label for="customer_prenom">Prénom :</label>
+                <input type="text" id="customer_prenom"  placeholder="Ex: Jean">
+                <div class="error" id="customer_prenom_error"></div>
+            </div>
+            <div>
+                <label for="customer_nom">Nom :</label>
+                <input type="text" id="customer_nom"  placeholder="Ex: Dupont">
+                <div class="error" id="customer_nom_error"></div>
+            </div>
+        </div>
+        <div>
+            <label for="customer_email">Adresse email :</label>
+            <input type="email" id="customer_email"  placeholder="Ex: jean.dupont@email.com">
+            <div class="error" id="customer_email_error"></div>
+        </div>
+        <div>
+            <label for="customer_telephone">Numéro de téléphone :</label>
+            <input type="tel" id="customer_telephone" pattern="[0-9]{10}"  placeholder="Ex: 0612345678">
+            <div class="error" id="customer_telephone_error"></div>
+        </div>
+        <div>
+            <label for="customer_adresse_ligne1">Adresse (ligne 1) :</label>
+            <input type="text" id="customer_adresse_ligne1"  placeholder="Ex: 10 rue de la Paix">
+            <div class="error" id="customer_adresse_ligne1_error"></div>
+        </div>
+        <div>
+            <label for="customer_adresse_ligne2">Adresse (ligne 2) (optionnel) :</label>
+            <input type="text" id="customer_adresse_ligne2" placeholder="Ex: Appartement 5B">
+            <div class="error" id="customer_adresse_ligne2_error"></div>
+        </div>
+        <div class="input-group">
+            <div>
+                <label for="customer_code_postal">Code postal :</label>
+                <input type="text" id="customer_code_postal" pattern="[0-9]{5}"  placeholder="Ex: 75001">
+                <div class="error" id="customer_code_postal_error"></div>
+            </div>
+            <div>
+                <label for="customer_ville">Ville :</label>
+                <input type="text" id="customer_ville"  placeholder="Ex: Paris">
+                <div class="error" id="customer_ville_error"></div>
+            </div>
+        </div>
+        <div>
+            <label for="customer_pays">Pays :</label>
+            <select id="customer_pays" >
+                <option value="France">France</option>
+                <option value="Belgique">Belgique</option>
+                <option value="Luxembourg">Luxembourg</option>
+                <option value="Espagne">Espagne</option>
+            </select>
+            <div class="error" id="customer_pays_error"></div>
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>🚚 Livraison</legend>
+        <section class="delivery-section" style="margin:0; padding:0; border:none; background:none;">
+            <div class="delivery-option">
+              <div class="option-header">
+                <input type="radio" id="mondial-relay" name="delivery_method_input" value="Mondial Relay" checked>
+                <label for="mondial-relay">Mondial Relay</label>
+                <span class="delivery-time">3-5 jours ouvrables</span>
+              </div>
+              <div class="option-details">
+                <span class="price">Frais de livraison : <span id="delivery_cost_display">5,00</span> € TTC</span>
+                <div>
+                  <button type="button" class="relay-button">CHOISIR MON POINT RELAIS</button>
+                  <div class="relay-info" id="RelayInfo" style="display: none;">
+                    <strong>Point Relais sélectionné :</strong><br>
+                    <div>ID : <span id="cb_ID"></span></div>
+                    <div>Nom : <span id="cb_Nom"></span></div>
+                    <div>Adresse : <span id="cb_Adresse"></span></div>
+                    <div>Code postal : <span id="cb_CP"></span></div>
+                    <div>Ville : <span id="cb_Ville"></span></div>
+                    <div>Pays : <span id="cb_Pays"></span></div>
+                  </div>
+                  <div id="Zone_Widget" style="margin-top: 20px; display: none;"></div>
+                </div>
+                <div class="error" id="relay_selection_error"></div>
+              </div>
+            </div>
+        </section>
+    </fieldset>
+    
+    <fieldset>
+        <legend>💳 Paiement</legend>
+        <div>
+            <label for="montant_sous_total_produits">Montant des produits (€) :</label>
+            <input type="number" id="montant_sous_total_produits" min="0.01" step="0.01"  placeholder="Ex: 95.00">
+            <div class="error" id="montant_sous_total_produits_error"></div>
+        </div>
+        <div>
+            <label for="montant_total_paye">Montant Total à Payer (€) :</label>
+            <input type="text" id="montant_total_paye" class="readonly-field" readonly>
+            <div class="error" id="montant_total_paye_error"></div>
+        </div>
+    </fieldset>
+
+    <input type="hidden" id="relay_id">
+    <input type="hidden" id="relay_name">
+    <input type="hidden" id="relay_address">
+    <input type="hidden" id="relay_cp">
+    <input type="hidden" id="relay_ville">
+    <input type="hidden" id="relay_pays">
+
+    <input type="hidden" id="manager_name" value="Responsable Outlet">
+    <input type="hidden" id="manager_email" value="responsable@outlet.com">
+    <input type="hidden" id="admin_order_link" value="#"> 
+
+
+    <button type="submit" id="checkout-button">Payer ... €</button>
+  </form> -->
+
+
+  <header>
+    <div class="logo">
+      <span class="script-text"></span>
+      <span class="outlet-text"><img src="./img/logo.png" alt=""></span>
+    </div>
+  </header>
+
+  <main>
+      <div class="checkout-container">
+        <div class="left-column">
+          <!-- Montant total section -->
+          <form id="payment-form">
+
+          <section class="form-section">
+            <h2>Montant total</h2>
+            <div class="form-group">
+              <label for="montant_sous_total_produits">Montant</label>
+              <div class="input-with-icon">
+                <input type="text" id="montant_sous_total_produits" name="montant_sous_total_produits" required>
+                <span class="icon">€</span>
+                <div class="error" id="montant_sous_total_produits_error"></div>
+
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="order_reference">Référence de commande</label>
+              <input type="text" id="order_reference" name="order_reference" required>
+              <div class="error" id="order_reference_error"></div>
+
+            </div>
+            <div class="form-group">
+              <label for="tiktok_pseudo">Pseudo TikTok</label>
+              <input type="text" id="tiktok_pseudo" name="tiktok_pseudo" required>
+              <div class="error" id="tiktok_pseudo_error"></div>
+
+            </div>
+          </section>
+
+          <!-- Adresse de livraison section -->
+          <section class="form-section">
+            <h2>Adresse de livraison</h2>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group half">
+                <label for="customer_prenom">Prénom</label>
+                <input type="text" id="customer_prenom"  name="customer_prenom" required>
+                <div class="error" id="customer_prenom_error"></div>
+              </div>
+              <div class="form-group half">
+                <label for="customer_nom">Nom</label>
+                <input type="text"id="customer_nom"   name="customer_nom" required>
+                <div class="error" id="customer_nom_error"></div>
+              </div>
+            </div>
+            <div class="form-group half">
+              <label for="customer_email">Adresse email :</label>
+              <input type="email" id="customer_email"  placeholder="Ex: jean.dupont@email.com">
+              <div class="error" id="customer_email_error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="customer_adresse_ligne1">Adresse (ligne 1) :</label>
+              <input type="text" id="customer_adresse_ligne1"  >
+              <div class="error" id="customer_adresse_ligne1_error"></div>              
+
+            </div>
+            <div  class="form-group">
+              <label for="customer_adresse_ligne2">Adresse (ligne 2) (optionnel) :</label>
+              <input type="text" id="customer_adresse_ligne2">
+              <div class="error" id="customer_adresse_ligne2_error"></div>
+          </div>
+            <div class="form-group">
+              <label for="customer_ville">Ville :</label>
+              <input type="text" id="customer_ville"  >
+              <div class="error" id="customer_ville_error"></div>
+            </div>
+            <div class="form-group">
+              <label for="customer_code_postal">Code postal :</label>
+              <input type="text" id="customer_code_postal"  >
+              <div class="error" id="customer_code_postal_error"></div>
+            </div>
+            <div class="form-group">
+              <label for="customer_pays">Pays :</label>
+              <select id="customer_pays" >
+                  <option value="France">France</option>
+                  <option value="Belgique">Belgique</option>
+                  <option value="Luxembourg">Luxembourg</option>
+                  <option value="Espagne">Espagne</option>
+              </select>
+              <div class="error" id="customer_pays_error"></div>
+          </div>
+            <div class="form-group">
+              <label for="customer_telephone">Numéro de téléphone</label>
+              <input
+              type="tel"
+              id="customer_telephone"
+              name="customer_telephone"
+              title="Format international : +CCXXXXXXXXXXX (jusqu’à 15 chiffres), ou sans ‘+’ pour format national"
+              required
+            />              
+            <div class="error" id="customer_telephone_error"></div>
+            </div>
+          </section>
+
+          <!-- Mode de livraison section -->
+          <section class="form-section">
+            <h2>Mode de livraison</h2>
+            <div class="delivery-option">
+              <div class="option-header">
+                <input type="radio" id="mondial-relay" name="delivery" checked>
+                <label for="mondial-relay">Mondial Relay</label>
+                <span class="delivery-time">3-15 jours ouvrables</span>
+              </div>
+              <div class="option-details">
+                <div>
+                  <!-- Bouton qui affiche le widget -->
+                  <button class="relay-button">CHOIX DU POINT RELAIS</button>
+                
+                  <!-- Informations sur le point relais sélectionné -->
+                  <div class="relay-info" id="RelayInfo" style="display: none;">
+                    <strong>Informations sur le point relais sélectionné :</strong><br>
+                    <div>Nom : <span id="cb_Nom"></span></div>
+                    <div>Adresse : <span id="cb_Adresse"></span></div>
+                    <div>Code postal : <span id="cb_CP"></span></div>
+                    <div>Ville : <span id="cb_Ville"></span></div>
+                    <div>Pays : <span id="cb_Pays"></span></div>
+                  </div>
+                
+                  <!-- Zone du widget -->
+                  <div id="Zone_Widget" style="margin-top: 20px; display: none;"></div>
+                </div>
+                <div class="error" id="relay_selection_error"></div>
+
+                <input type="hidden" id="relay_id">
+                <input type="hidden" id="relay_name">
+                <input type="hidden" id="relay_address">
+                <input type="hidden" id="relay_cp">
+                <input type="hidden" id="relay_ville">
+                <input type="hidden" id="relay_pays">
+            
+                <input type="hidden" id="manager_name" value="Responsable Outlet">
+                <input type="hidden" id="manager_email" value="responsable@outlet.com">
+                <input type="hidden" id="admin_order_link" value="#"> 
+            
+              </div>
+            </div>
+          </section>
+
+          <!-- Mode de paiement section -->
+          <section class="form-section">
+            <h2>Mode de paiement</h2>
+
+            <div class="payment-option">
+              <input type="radio" id="card-payment" name="payment" checked>
+              <label for="card-payment">Payer par carte bancaire</label>
+              <div class="card-logos">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+              </div> 
+    <button type="submit" id="checkout-button">Payer ... €</button>
+
+            </div>
+          </section>
+        </form>
+
+
+        </div>
+
+        <div class="right-column">
+          <div class="payment-summary">
+            <h2>Récapitulatif</h2>
+            <div class="summary-item">
+              <span>Montant total</span>
+              <span class="amount" id="montant_total_paye">0,00 €</span>
+            </div>
+            <div class="summary-item">
+              <span>Livraison</span>
+              <span class="delivery-cost">5,00 €</span>
+            </div>
+            <div class="summary-item total">
+              <span>Total</span>
+              <span class="total-amount" id="total-amount">5,00 €</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe = Stripe('pk_test_51RMcbvFsaxyzHewr0esp4Sg7olFaI14IXH3aKuuHBatsKDFafXHIsElPu5L2JVOUbjUsApclpRchWncjvMZkQ2kd00gEtRVOEy'); 
+    const checkoutButton = document.getElementById('checkout-button');
+    const subTotalInput = document.getElementById('montant_sous_total_produits');
+    const totalDisplayInput = document.getElementById('montant_total_paye');
+    const deliveryCost = 5.00; 
+
+    function updateTotalAndButton() {
+        const subTotalValue = parseFloat(subTotalInput.value);
+        let totalAmount = deliveryCost;
+        if (!isNaN(subTotalValue) && subTotalValue > 0) {
+            totalAmount += subTotalValue;
+        }
+        
+        const formattedTotal = totalAmount.toFixed(2);
+        totalDisplayInput.value = formattedTotal;
+        
+        if (totalAmount > deliveryCost) { 
+             checkoutButton.textContent = `Payer ${formattedTotal} €`;
+        } else {
+            checkoutButton.textContent = 'Payer';
+        }
+    }
+    subTotalInput.addEventListener('input', updateTotalAndButton);
+    updateTotalAndButton(); 
+
+    document.getElementById('payment-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      checkoutButton.disabled = true;
+      checkoutButton.textContent = 'Traitement...';
+      
+      if (!validateForm()) {
+        checkoutButton.disabled = false;
+        updateTotalAndButton();
+        return;
+      }
+
+      const formDataForSession = {
+        order_reference: document.getElementById('order_reference').value.trim() || `ORD-${Date.now()}`, 
+        tiktok_pseudo: document.getElementById('tiktok_pseudo').value.trim() || 'Non spécifié',
+        order_date: new Date().toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' }),
+        
+        customer_prenom: document.getElementById('customer_prenom').value.trim(),
+        customer_nom: document.getElementById('customer_nom').value.trim(),
+        customer_email: document.getElementById('customer_email').value.trim(),
+        customer_telephone: document.getElementById('customer_telephone').value.trim() || 'Non spécifié', 
+        customer_adresse_ligne1: document.getElementById('customer_adresse_ligne1').value.trim(),
+        
+        customer_adresse_ligne2: document.getElementById('customer_adresse_ligne2').value.trim() || '', 
+        customer_code_postal: document.getElementById('customer_code_postal').value.trim(),
+        customer_ville: document.getElementById('customer_ville').value.trim(),
+        customer_pays: document.getElementById('customer_pays').value, 
+
+        delivery_method: document.querySelector('input[name="delivery_method_input"]:checked') ? document.querySelector('input[name="delivery_method_input"]:checked').value : 'N/A',
+        delivery: {
+          relay_id: document.getElementById('relay_id').value,
+          relay_name: document.getElementById('relay_name').value,
+          address: document.getElementById('relay_address').value,
+          cp: document.getElementById('relay_cp').value,
+          ville: document.getElementById('relay_ville').value,
+          pays: document.getElementById('relay_pays').value
+        },
+        
+        montant_sous_total_produits: parseFloat(subTotalInput.value).toFixed(2),
+        montant_total_paye: parseFloat(totalDisplayInput.value).toFixed(2),
+
+        
+        manager_name: document.getElementById('manager_name').value,
+        manager_email: document.getElementById('manager_email').value,
+        admin_order_link: document.getElementById('admin_order_link').value,
+        site_url: window.location.origin,
+        current_year: new Date().getFullYear(),
+        
+        time: new Date().toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' }),
+      };
+
+      console.log('formDataForSession envoyé à EmailJS:', formDataForSession); 
+      sessionStorage.setItem('checkoutFormData', JSON.stringify(formDataForSession));
+      try {
+        const amountInCents = Math.round(parseFloat(totalDisplayInput.value) * 100);
+        const response = await fetch('http://localhost:3000/create-checkout-session', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: amountInCents })
+        });
+        
+        if (!response.ok) {
+            let errorMsg = `HTTP error! status: ${response.status}`;
+            try { const errorData = await response.json(); errorMsg = errorData.error || errorMsg; } catch (jsonError) {}
+            throw new Error(errorMsg);
+        }
+        
+        const { url } = await response.json();
+        if (url) {
+            window.location.href = url;
+        } else {
+            throw new Error('URL de paiement non reçue.');
+        }
+      } catch (error) {
+        console.error('Erreur de paiement:', error);
+        showError('status', 'Erreur: ' + error.message);
+        checkoutButton.disabled = false;
+        updateTotalAndButton();
+      }
+    });
+
+    function validateForm() {
+      let isValid = true;
+      clearErrors();
+
+      const Fields = [
+        'customer_prenom', 'customer_nom', 'customer_email', 'customer_telephone',
+        'customer_adresse_ligne1', 'customer_code_postal', 'customer_ville', 'customer_pays',
+        'montant_sous_total_produits'
+      ];
+      Fields.forEach(fieldId => {
+        const inputElement = document.getElementById(fieldId);
+        const value = inputElement.value.trim();
+        if (!value) {
+          showError(`${fieldId}_error`, 'Ce champ est obligatoire.');
+          isValid = false;
+        }
+      });
+
+      const email = document.getElementById('customer_email').value;
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('customer_email_error', 'Format d\'email invalide.');
+        isValid = false;
+      }
+
+      const phone = document.getElementById('customer_telephone').value;
+      if (!phone) {
+        showError('customer_telephone_error', 'Numéro de téléphone invalide (10 chiffres attendus).');
+        isValid = false;
+      }
+      
+      const cp = document.getElementById('customer_code_postal').value;
+      if (cp && !/^[0-9]{5}$/.test(cp)) {
+        showError('customer_code_postal_error', 'Code postal invalide (5 chiffres attendus).');
+        isValid = false;
+      }
+
+      const subTotalValue = parseFloat(subTotalInput.value);
+      if (isNaN(subTotalValue) || subTotalValue <= 0) {
+        showError('montant_sous_total_produits_error', 'Le montant des produits doit être positif.');
+        isValid = false;
+      }
+
+      const deliveryMethodRadio = document.querySelector('input[name="delivery_method_input"]:checked');
+      if (deliveryMethodRadio && deliveryMethodRadio.value === 'Mondial Relay') {
+        if (!document.getElementById('relay_id').value) {
+          showError('relay_selection_error', 'Veuillez sélectionner un point relais.');
+          isValid = false;
+        }
+      }
+      return isValid;
+    }
+
+    function showError(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      if (errorElement) { errorElement.textContent = message; }
+      else if (elementId === 'status') { document.getElementById('status').innerHTML = `❌ ${message}`; }
+      else { console.warn(`Error element ${elementId} not found.`); }
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const paymentStatus = params.get('status');
+
+    if (paymentStatus === 'success') {
+      document.getElementById('status').innerHTML = '⏳ Traitement de la confirmation...';
+      const formDataString = sessionStorage.getItem('checkoutFormData');
+      if (formDataString) {
+        const finalFormData = JSON.parse(formDataString);
+        console.log("Final formData for EmailJS:", finalFormData); 
+
+        emailjs.send('service_pr5elr5', 'template_t28ckiz', finalFormData)
+          .then(() => {
+            document.getElementById('status').innerHTML = '✅ Paiement réussi! Email de confirmation envoyé.';
+            sessionStorage.removeItem('checkoutFormData');
+          })
+          .catch(emailError => {
+            console.error('Erreur envoi email:', emailError);
+            document.getElementById('status').innerHTML = `✅ Paiement réussi! Erreur envoi email: ${emailError.text || 'Voir console'}.`;
+          });
+      } else {
+        document.getElementById('status').innerHTML = '✅ Paiement réussi! (Données formulaire non trouvées pour email).';
+      }
+    } else if (paymentStatus === 'canceled') {
+      document.getElementById('status').innerHTML = '❌ Paiement annulé.';
+       sessionStorage.removeItem('checkoutFormData');
+    }
+
+    $(document).ready(function () {
+        $(".relay-button").on("click", function (e) {
+          e.preventDefault();
+          const widgetZone = $("#Zone_Widget");
+          widgetZone.toggle(); 
+          if (widgetZone.is(":visible")) {
+            widgetZone.empty();
+
+
+            widgetZone.MR_ParcelShopPicker({
+
+
+              Target: "#Target_Widget",
+      
+              Brand: "BDTEST  ",
+              Country: "FR",
+              PostCode: "59000",
+              ColLivMod: "24R",
+              NbResults: "7",
+
+              Responsive: true,
+              ShowResultsOnMap: true,
+              OnParcelShopSelected: function (data) {
+                $("#cb_ID").text(data.ID); $("#cb_Nom").text(data.Nom);
+                let fullAddress = data.Adresse1;
+                if (data.Adresse2 && data.Adresse2.trim() !== "") fullAddress += " " + data.Adresse2.trim();
+                $("#cb_Adresse").text(fullAddress); $("#cb_CP").text(data.CP);
+                $("#cb_Ville").text(data.Ville); $("#cb_Pays").text(data.Pays);
+                document.getElementById('relay_id').value = data.ID;
+                document.getElementById('relay_name').value = data.Nom;
+                document.getElementById('relay_address').value = fullAddress;
+                document.getElementById('relay_cp').value = data.CP;
+                document.getElementById('relay_ville').value = data.Ville;
+                document.getElementById('relay_pays').value = data.Pays;
+                $("#RelayInfo").slideDown(); widgetZone.slideUp(); clearErrors();
+              },
+              OnErrorOccured: function(error) {
+                console.error("Mondial Relay Widget Error:", error);
+                showError('relay_selection_error', 'Erreur widget Mondial Relay: ' + (error.message || 'Inconnue'));
+              }
+            });
+          }
+        });
+      });
+  </script>
+  <script src="./script.js"></script>
+
+</body>
+</html>
