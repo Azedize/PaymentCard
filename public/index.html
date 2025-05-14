@@ -9,145 +9,14 @@
   <script src="https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="stylesheet" href="./style.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=AVfvLQqNqMn-YqG6IZfbWDXdISS5i9z6ttAw2TZ0xJifes-TYnsLWIgcbfbHXovOlauTgJ5svyF8uHK4&currency=EUR"></script>
+
   <script>
     emailjs.init({ publicKey: 'vTE0slihJ8jvyMeVq' }); 
   </script>
 </head>
 
 <body>
-
-  <!-- <form id="payment-form">
-    <fieldset>
-        <legend>📝 Détails de la Commande</legend>
-        <div>
-            <label for="order_reference">Référence de commande (optionnel) :</label>
-            <input type="text" id="order_reference" placeholder="Ex: ORD-12345">
-            <div class="error" id="order_reference_error"></div>
-        </div>
-        <div>
-            <label for="tiktok_pseudo">Pseudo TikTok (optionnel) :</label>
-            <input type="text" id="tiktok_pseudo" placeholder="Ex: @votrePseudoTikTok">
-            <div class="error" id="tiktok_pseudo_error"></div>
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>👤 Informations Client</legend>
-        <div class="input-group">
-            <div>
-                <label for="customer_prenom">Prénom :</label>
-                <input type="text" id="customer_prenom"  placeholder="Ex: Jean">
-                <div class="error" id="customer_prenom_error"></div>
-            </div>
-            <div>
-                <label for="customer_nom">Nom :</label>
-                <input type="text" id="customer_nom"  placeholder="Ex: Dupont">
-                <div class="error" id="customer_nom_error"></div>
-            </div>
-        </div>
-        <div>
-            <label for="customer_email">Adresse email :</label>
-            <input type="email" id="customer_email"  placeholder="Ex: jean.dupont@email.com">
-            <div class="error" id="customer_email_error"></div>
-        </div>
-        <div>
-            <label for="customer_telephone">Numéro de téléphone :</label>
-            <input type="tel" id="customer_telephone" pattern="[0-9]{10}"  placeholder="Ex: 0612345678">
-            <div class="error" id="customer_telephone_error"></div>
-        </div>
-        <div>
-            <label for="customer_adresse_ligne1">Adresse (ligne 1) :</label>
-            <input type="text" id="customer_adresse_ligne1"  placeholder="Ex: 10 rue de la Paix">
-            <div class="error" id="customer_adresse_ligne1_error"></div>
-        </div>
-        <div>
-            <label for="customer_adresse_ligne2">Adresse (ligne 2) (optionnel) :</label>
-            <input type="text" id="customer_adresse_ligne2" placeholder="Ex: Appartement 5B">
-            <div class="error" id="customer_adresse_ligne2_error"></div>
-        </div>
-        <div class="input-group">
-            <div>
-                <label for="customer_code_postal">Code postal :</label>
-                <input type="text" id="customer_code_postal" pattern="[0-9]{5}"  placeholder="Ex: 75001">
-                <div class="error" id="customer_code_postal_error"></div>
-            </div>
-            <div>
-                <label for="customer_ville">Ville :</label>
-                <input type="text" id="customer_ville"  placeholder="Ex: Paris">
-                <div class="error" id="customer_ville_error"></div>
-            </div>
-        </div>
-        <div>
-            <label for="customer_pays">Pays :</label>
-            <select id="customer_pays" >
-                <option value="France">France</option>
-                <option value="Belgique">Belgique</option>
-                <option value="Luxembourg">Luxembourg</option>
-                <option value="Espagne">Espagne</option>
-            </select>
-            <div class="error" id="customer_pays_error"></div>
-        </div>
-    </fieldset>
-    
-    <fieldset>
-        <legend>🚚 Livraison</legend>
-        <section class="delivery-section" style="margin:0; padding:0; border:none; background:none;">
-            <div class="delivery-option">
-              <div class="option-header">
-                <input type="radio" id="mondial-relay" name="delivery_method_input" value="Mondial Relay" checked>
-                <label for="mondial-relay">Mondial Relay</label>
-                <span class="delivery-time">3-5 jours ouvrables</span>
-              </div>
-              <div class="option-details">
-                <span class="price">Frais de livraison : <span id="delivery_cost_display">5,00</span> € TTC</span>
-                <div>
-                  <button type="button" class="relay-button">CHOISIR MON POINT RELAIS</button>
-                  <div class="relay-info" id="RelayInfo" style="display: none;">
-                    <strong>Point Relais sélectionné :</strong><br>
-                    <div>ID : <span id="cb_ID"></span></div>
-                    <div>Nom : <span id="cb_Nom"></span></div>
-                    <div>Adresse : <span id="cb_Adresse"></span></div>
-                    <div>Code postal : <span id="cb_CP"></span></div>
-                    <div>Ville : <span id="cb_Ville"></span></div>
-                    <div>Pays : <span id="cb_Pays"></span></div>
-                  </div>
-                  <div id="Zone_Widget" style="margin-top: 20px; display: none;"></div>
-                </div>
-                <div class="error" id="relay_selection_error"></div>
-              </div>
-            </div>
-        </section>
-    </fieldset>
-    
-    <fieldset>
-        <legend>💳 Paiement</legend>
-        <div>
-            <label for="montant_sous_total_produits">Montant des produits (€) :</label>
-            <input type="number" id="montant_sous_total_produits" min="0.01" step="0.01"  placeholder="Ex: 95.00">
-            <div class="error" id="montant_sous_total_produits_error"></div>
-        </div>
-        <div>
-            <label for="montant_total_paye">Montant Total à Payer (€) :</label>
-            <input type="text" id="montant_total_paye" class="readonly-field" readonly>
-            <div class="error" id="montant_total_paye_error"></div>
-        </div>
-    </fieldset>
-
-    <input type="hidden" id="relay_id">
-    <input type="hidden" id="relay_name">
-    <input type="hidden" id="relay_address">
-    <input type="hidden" id="relay_cp">
-    <input type="hidden" id="relay_ville">
-    <input type="hidden" id="relay_pays">
-
-    <input type="hidden" id="manager_name" value="Responsable Outlet">
-    <input type="hidden" id="manager_email" value="responsable@outlet.com">
-    <input type="hidden" id="admin_order_link" value="#"> 
-
-
-    <button type="submit" id="checkout-button">Payer ... €</button>
-  </form> -->
-
 
   <header>
     <div class="logo">
@@ -208,7 +77,7 @@
             </div>
             <div class="form-group half">
               <label for="customer_email">Adresse email :</label>
-              <input type="email" id="customer_email"  placeholder="Ex: jean.dupont@email.com">
+              <input type="email" id="customer_email"  >
               <div class="error" id="customer_email_error"></div>
             </div>
             
@@ -312,9 +181,11 @@
                 <i class="fab fa-cc-mastercard"></i>
                 <i class="fab fa-cc-amex"></i>
               </div> 
-    <button type="submit" id="checkout-button">Payer ... €</button>
 
             </div>
+            <button type="submit" id="checkout-button">Payer ... €</button>
+            <div id="paypal-button-container"></div>
+
           </section>
         </form>
 
