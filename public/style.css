@@ -438,3 +438,15 @@ footer {
   from { opacity: 0; transform: translateY(30px);}
   to { opacity: 1; transform: translateY(0);}
 }
+.card-logos {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.card-logos .icon,
+.card-logos img {
+  width: 2rem;
+  height: auto;
+  display: block;
+}
+
