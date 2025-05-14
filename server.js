@@ -1,5 +1,4 @@
-// server.js
-const path = require('path');
+=const path = require('path');
 const express = require('express');
 const Stripe = require('stripe');
 const bodyParser = require('body-parser');
@@ -8,7 +7,6 @@ const cors = require('cors');
 const app = express();
 const stripe = Stripe('sk_test_51RMcbvFsaxyzHewr3cvw1i78hbV4lxoAlRltRN7akz0ZMVvofAeiTBYBCvlHkSzwsaheysazrcCDc1zyjiU2BLic00o3aKZl0q');
 
-// Configuration de base
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(bodyParser.json());
