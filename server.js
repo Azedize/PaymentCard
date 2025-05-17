@@ -4,7 +4,7 @@ const Stripe = require('stripe');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const stripe = Stripe('sk_test_51RMcbvFsaxyzHewr3cvw1i78hbV4lxoAlRltRN7akz0ZMVvofAeiTBYBCvlHkSzwsaheysazrcCDc1zyjiU2BLic00o3aKZl0q');
+const stripe = Stripe('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');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
