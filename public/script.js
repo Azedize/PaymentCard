@@ -17,28 +17,4 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
   });
-  paypal.Buttons({
 
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value:"222"
-          }
-        }]
-      });
-    },
-
-
-
-    // 3. Gestion des erreurs / annulations
-    onCancel: function (data) {
-      console.log('Achat annulé', data);
-      alert('Vous avez annulé le paiement.');
-    },
-    onError: function (err) {
-      console.error('Erreur PayPal', err);
-      alert('Une erreur est survenue lors du paiement.');
-    }
-
-  }).render('#paypal-button-container');
