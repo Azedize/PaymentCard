@@ -291,7 +291,7 @@
       sessionStorage.setItem('checkoutFormData', JSON.stringify(formDataForSession));
       try {
         const amountInCents = Math.round(parseFloat(totalDisplayInput.value) * 100);
-        const response = await fetch('http://localhost:3000/create-checkout-session', { 
+        const response = await fetch('/api/create-checkout-session', { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: amountInCents })
