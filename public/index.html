@@ -21,7 +21,7 @@
   <header>
     <div class="logo">
       <span class="script-text"></span>
-      <span class="outlet-text"><img src="./img/logo.png" alt=""></span>
+      <span class="outlet-text"><img src="./img/logo.png" alt=""></span> 
     </div>
   </header>
 
@@ -60,8 +60,8 @@
           <section class="form-section">
             <h2>Adresse de livraison</h2>
             <div class="form-group">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" required>
+              <label for="customer_email">E-mail</label>
+              <input type="customer_email" id="customer_email" name="customer_email" required>
             </div>
             <div class="form-row">
               <div class="form-group half">
@@ -75,11 +75,7 @@
                 <div class="error" id="customer_nom_error"></div>
               </div>
             </div>
-            <div class="form-group half">
-              <label for="customer_email">Adresse email :</label>
-              <input type="email" id="customer_email"  >
-              <div class="error" id="customer_email_error"></div>
-            </div>
+
             
             <div class="form-group">
               <label for="customer_adresse_ligne1">Adresse (ligne 1) :</label>
@@ -89,22 +85,22 @@
             </div>
             <div  class="form-group">
               <label for="customer_adresse_ligne2">Adresse (ligne 2) (optionnel) :</label>
-              <input type="text" id="customer_adresse_ligne2">
+              <input type="text" id="customer_adresse_ligne2" required>
               <div class="error" id="customer_adresse_ligne2_error"></div>
           </div>
             <div class="form-group">
               <label for="customer_ville">Ville :</label>
-              <input type="text" id="customer_ville"  >
+              <input type="text" id="customer_ville" required >
               <div class="error" id="customer_ville_error"></div>
             </div>
             <div class="form-group">
               <label for="customer_code_postal">Code postal :</label>
-              <input type="text" id="customer_code_postal"  >
+              <input type="text" id="customer_code_postal"  required>
               <div class="error" id="customer_code_postal_error"></div>
             </div>
             <div class="form-group">
               <label for="customer_pays">Pays :</label>
-              <select id="customer_pays" >
+              <select id="customer_pays"  >
                   <option value="France">France</option>
                   <option value="Belgique">Belgique</option>
                   <option value="Luxembourg">Luxembourg</option>
@@ -132,7 +128,11 @@
               <div class="option-header">
                 <input type="radio" id="mondial-relay" name="delivery" checked>
                 <label for="mondial-relay">Mondial Relay</label>
-                <span class="delivery-time">3-15 jours ouvrables</span>
+                <span class="delivery-time">3-5 jours ouvrables</span>
+              </div>
+              <div class="icon-text-container">
+                <i class="fas fa-truck"></i>
+                Frais de port offert pour les prochaines commandes durant le live
               </div>
               <div class="option-details">
                 <div>
@@ -419,7 +419,6 @@
             widgetZone.MR_ParcelShopPicker({
 
 
-              Target: "#Target_Widget",
       
               Brand: "BDTEST  ",
               Country: "FR",
