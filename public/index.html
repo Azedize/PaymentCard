@@ -9,7 +9,7 @@
   <script src="https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="stylesheet" href="./style.css">
-    <link rel="icon" href="./img/logo.png" type="image/png">
+  <link rel="icon" href="./img/logo.png" type="image/png">
 
   <script>
     emailjs.init({ publicKey: 'vTE0slihJ8jvyMeVq' }); 
@@ -183,7 +183,9 @@
               </div>
 
             </div>
-            <button type="submit" id="checkout-button">Payer ... €</button>
+            <!-- <button type="submit" id="checkout-button">  Payer ... €</button> -->
+                <div id="paypal-button-container"> </div> 
+
 
           </section>
         </form>
@@ -209,10 +211,10 @@
           </div>
         </div>
       </div>
+
   </main>
-  <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AeqTCD9k-CLTUINlOeqT52rFOS3mtufMpyTSRQwqE2XKaI3p3V6HgvayYmw4xQtxQaojmVPEkhJCsU_1"></script>
   <script>
-    const stripe = Stripe('pk_live_51RMcbkCINxTqBneQgmUAwwhyQ4Xm851nHf2g3irxYDYYbOnNq0YP5d3bXA5aP3rS9oQLg4KMmTEIUX8dqWeJGMGc009yK6MQYo'); 
     const checkoutButton = document.getElementById('checkout-button');
     const subTotalInput = document.getElementById('montant_sous_total_produits');
     const totalDisplayInput = document.getElementById('montant_total_paye');
@@ -291,24 +293,7 @@
       sessionStorage.setItem('checkoutFormData', JSON.stringify(formDataForSession));
       try {
         const amountInCents = Math.round(parseFloat(totalDisplayInput.value) * 100);
-        const response = await fetch('/api/create-checkout-session', { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: amountInCents })
-        });
-        
-        if (!response.ok) {
-            let errorMsg = `HTTP error! status: ${response.status}`;
-            try { const errorData = await response.json(); errorMsg = errorData.error || errorMsg; } catch (jsonError) {}
-            throw new Error(errorMsg);
-        }
-        
-        const { url } = await response.json();
-        if (url) {
-            window.location.href = url;
-        } else {
-            throw new Error('URL de paiement non reçue.');
-        }
+
       } catch (error) {
         console.error('Erreur de paiement:', error);
         showError('status', 'Erreur: ' + error.message);
@@ -450,6 +435,7 @@
           }
         });
       });
+      
   </script>
   <script src="./script.js"></script>
 
