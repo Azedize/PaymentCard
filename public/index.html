@@ -230,11 +230,7 @@
         const formattedTotal = totalAmount.toFixed(2);
         totalDisplayInput.value = formattedTotal;
         
-        if (totalAmount > deliveryCost) { 
-             checkoutButton.textContent = `Payer ${formattedTotal} €`;
-        } else {
-            checkoutButton.textContent = 'Payer';
-        }
+     
     }
     subTotalInput.addEventListener('input', updateTotalAndButton);
     updateTotalAndButton(); 
@@ -392,6 +388,8 @@
        sessionStorage.removeItem('checkoutFormData');
     }
 
+
+    
     $(document).ready(function () {
         $(".relay-button").on("click", function (e) {
           e.preventDefault();
@@ -405,7 +403,7 @@
 
 
       
-              Brand: "BDTEST",
+              Brand: "BDTEST  ",
               Country: "FR",
               PostCode: "59000",
               ColLivMod: "24R",
@@ -435,7 +433,12 @@
           }
         });
       });
-      
+  
+  
+  
+  
+  
+
   </script>
   <script src="./script.js"></script>
 
